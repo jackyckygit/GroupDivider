@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from '@rneui/themed'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Define the props interface 
 interface AddButtonProps { 
@@ -10,25 +10,22 @@ interface AddButtonProps {
 }
 
 const styles = StyleSheet.create({
-    button: { 
+    myButton: { 
         borderRadius: 25,
-        padding: 10
+        padding: 10,
+        backgroundColor: 'transparent'
     },
 });
   
 const AddIconButton: FC<AddButtonProps> = ({ onAdd, onRemove, isAdd }) => { 
     return (
-        <Button 
-            icon={{
-                name: (isAdd)?'plus':'minus',
-                type: 'font-awesome',
-                size: 15,
-                color: 'black',
-            }}            
+        <Icon.Button
+            name={(isAdd)?'plus':'minus'}
+            backgroundColor="transparent"
+            style={styles.myButton} 
+            color= {'black'}
             onPress={(isAdd)?onAdd:onRemove} 
-            buttonStyle={styles.button} 
-            type={"clear"}
-        /> 
+        />
     )
 }; 
 

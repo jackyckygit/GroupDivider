@@ -1,23 +1,22 @@
 import React, { useState, FC } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Button } from '@rneui/themed'; 
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from 'expo-router';
 
 import MyTextInput from './components/myTextInput';
 
-interface Props { 
-  navigation: NativeStackNavigationProp<any, any>; 
-}
+type GroupParamList = {
+  groupInputPage: { usernames: string[] };
+};
 
-type ParamList = { groupInputPage: { usernames: string[] }; };
+type groupRouteProp = StackNavigationProp<GroupParamList>;
 
-// const usernameInputPage: FC<Props> = ({ navigation }) => {
 const usernameInputPage: FC = () => {
   const [usernames, setUsernames] = useState<string[]>(['']);
   const [newUsername, setNewUsername] = useState<string>('');
   const [disableGroup, setDisableGroup] = useState<boolean>(true);
-  const navigation = useNavigation<NativeStackNavigationProp<ParamList, 'groupInputPage'>>();
+  const navigation = useNavigation<groupRouteProp>();
 
   const handleAddUsername = () => {
     setUsernames([...usernames, newUsername]);
