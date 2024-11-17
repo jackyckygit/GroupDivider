@@ -1,13 +1,12 @@
 import React, { useState, FC } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Button } from '@rneui/themed'; 
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Link } from 'expo-router';
 import MyTextInput from './components/myTextInput';
+import GroupOverlay from './GroupOverlay';
 
-interface Props { 
-  navigation: NativeStackNavigationProp<any, any>; 
+type groups = { 
+   [key: string]: string[] 
 }
 
 function assignUsersToGroups(usernames: string[], groupNames: string[]): Record<string, string[]> {
@@ -40,11 +39,14 @@ function assignUsersToGroups(usernames: string[], groupNames: string[]): Record<
 
 type ParamList = { groupInputPage: { usernames: string[] }; };
 
-const groupInputPage: FC<Props> = ({ navigation }) => {
+const groupInputPage: FC = () => {
   const route = useRoute<RouteProp<ParamList, 'groupInputPage'>>(); 
   const [ groups, setGroups ] = useState([''])
   const [ newGroup, setNewGroup] = useState<string>('');
-  const [disableGroup, setDisableGroup] = useState<boolean>(true);
+  const [ disableGroup, setDisableGroup ] = useState(true);
+  const [ displayGroup, setDisplayGroup ] = useState(false);
+  const [ assignedGroups, setAssignedGroups ] = useState<groups>({});
+
   const { usernames } = route.params
 
   const handleCreateGroups = () => {
@@ -57,8 +59,9 @@ const groupInputPage: FC<Props> = ({ navigation }) => {
       alert('Number of groups is more than that of usernames')
     }
     else {
-      const assignedGroups = assignUsersToGroups(usernames, groups);
-      console.log(assignedGroups);
+      const _assignedGroups = assignUsersToGroups(usernames, groups);
+      setDisplayGroup(true);
+      setAssignedGroups(_assignedGroups)
     }
   };
 
@@ -108,8 +111,10 @@ const groupInputPage: FC<Props> = ({ navigation }) => {
           disabled={disableGroup}
         />
       </View>
-      {/* <Link href="/groupInputPage">Form Group!!</Link> */}
     </View>
+    { displayGroup &&
+      <GroupOverlay onClose={()=>setDisplayGroup(false)} assignedGroups={assignedGroups} />
+    }
     </ScrollView>
   );
 };
