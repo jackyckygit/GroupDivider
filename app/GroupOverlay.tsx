@@ -31,7 +31,7 @@ const GroupView: FC<groupProps> = ({ groups }) => {
       };
 
       return (
-        <View style={styles.container}>
+        <View>
           <Text style={styles.header}>Group Members</Text>
           <View style={styles.table}>
             {renderTable()}
@@ -43,7 +43,7 @@ const GroupView: FC<groupProps> = ({ groups }) => {
 
 const GroupOverlay: FC<OverlayComponentProps> = ({ onClose, assignedGroups }) => {
     return (
-    <View>
+    <View style={styles.container}>
         <Overlay isVisible={true} onBackdropPress={onClose}>
             <GroupView groups={ assignedGroups }/>
             <Button
